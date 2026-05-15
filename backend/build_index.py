@@ -4,18 +4,19 @@ from typing import List
 import faiss
 import numpy as np
 from dotenv import load_dotenv
-from openai import OpenAI
+from .gigachat_client import GigaChatClient
 
 from .rag_index import load_faq_data
 
 
 load_dotenv()
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-if not OPENAI_API_KEY:
-    raise RuntimeError("OPENAI_API_KEY is not set. Please set it in your environment or in a .env file.")
+GIGACHAT_CLIENT_ID = os.getenv("GIGACHAT_CLIENT_ID")
+GIGACHAT_CLIENT_SECRET = os.getenv("GIGACHAT_CLIENT_SECRET")
+if not GIGACHAT_CLIENT_ID or not GIGACHAT_CLIENT_SECRET:
+    raise RuntimeError("GIGACHAT_CLIENT_ID or GIGACHAT_CLIENT_SECRET is not set. Please set it in your environment or in a .env file.")
 
-client = OpenAI(api_key=OPENAI_API_KEY)
+client = GigaChatClient(client_id=GIGACHAT_CLIENT_ID, client_secret=GIGACHAT_CLIENT_SECRET, verify=False)
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -25,11 +26,7 @@ META_PATH = os.path.join(DATA_DIR, "faqs_metadata.npy")
 
 
 def embed_texts(texts: List[str]) -> np.ndarray:
-    response = client.embeddings.create(
-        model="text-embedding-3-small",
-        input=texts,
-    )
-    vectors = [d.embedding for d in response.data]
+    vectors = client.get_embeddings(texts)
     return np.array(vectors, dtype="float32")
 
 

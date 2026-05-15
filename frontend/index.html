@@ -2,260 +2,487 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>FAQ ассистент</title>
+  <title>DeNICE-AI | Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+    :root {
+      --bg-color: #0b0f19;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --secondary: #8b5cf6;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.05);
     }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Background glow effects */
+    .glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--secondary) 0%, transparent 60%);
+      opacity: 0.15;
+      filter: blur(100px);
+      z-index: -1;
+      border-radius: 50%;
+    }
+
+    .glow.top-left {
+      top: -200px;
+      left: -200px;
+    }
+
+    .glow.bottom-right {
+      bottom: -200px;
+      right: -200px;
+      background: radial-gradient(circle, var(--primary) 0%, transparent 60%);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 32px 0;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 100px 0 80px;
+    }
+
+    .hero h1 {
+      font-size: 64px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      letter-spacing: -2px;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      border-radius: 99px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+    }
+
+    /* Projects Section */
+    .projects {
+      padding: 60px 0 120px;
+    }
+
+    .section-title {
+      font-size: 36px;
+      margin-bottom: 48px;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .card h3 {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      gap: 8px;
+    }
+
+    .card-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Widget Styles - Refined and Integrated */
     .chat-launcher {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: 32px;
+      right: 32px;
       width: 64px;
       height: 64px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.7);
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
       cursor: pointer;
       border: none;
       outline: none;
-      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
       z-index: 1000;
     }
 
     .chat-launcher:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 50px rgba(15, 23, 42, 0.9);
+      transform: scale(1.05) translateY(-5px);
+      box-shadow: 0 15px 40px rgba(139, 92, 246, 0.6);
     }
 
     .chat-launcher span {
-      font-size: 30px;
+      font-size: 28px;
     }
 
     .chat-widget {
       position: fixed;
-      bottom: 100px;
-      right: 24px;
-      width: 360px;
-      max-width: calc(100vw - 32px);
-      height: 480px;
-      max-height: calc(100vh - 120px);
-      background: #020617;
+      bottom: 110px;
+      right: 32px;
+      width: 380px;
+      max-width: calc(100vw - 64px);
+      height: 520px;
+      max-height: calc(100vh - 140px);
+      background: rgba(11, 15, 25, 0.85);
       border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.85);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(24px);
+      z-index: 1000;
+      transform-origin: bottom right;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .chat-widget.hidden {
+      opacity: 0;
+      transform: scale(0.9) translateY(20px);
+      pointer-events: none;
     }
 
     .chat-header {
-      padding: 14px 16px;
-      background: radial-gradient(circle at top left, #4f46e5, #020617);
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: #e5e7eb;
     }
 
     .chat-header-left {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
     }
 
     .avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, #ffffff, #4f46e5);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      color: #020617;
-      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.6);
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
     }
 
     .chat-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
     }
 
     .chat-subtitle {
-      font-size: 11px;
-      color: #cbd5f5;
-      opacity: 0.8;
+      font-size: 12px;
+      color: var(--text-muted);
     }
 
     .chat-close {
       border: none;
       background: transparent;
-      color: #e5e7eb;
-      font-size: 18px;
+      color: var(--text-muted);
+      font-size: 24px;
       cursor: pointer;
-      opacity: 0.8;
+      transition: color 0.2s;
     }
 
     .chat-close:hover {
-      opacity: 1;
+      color: #fff;
     }
 
     .chat-messages {
       flex: 1;
-      padding: 14px 14px 10px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
       overflow-y: auto;
-      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.05), transparent),
-                  radial-gradient(circle at bottom, rgba(129, 140, 248, 0.08), #020617);
+    }
+
+    .chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
     }
 
     .chat-message {
-      max-width: 80%;
-      border-radius: 14px;
-      padding: 8px 11px;
-      font-size: 13px;
-      line-height: 1.35;
+      max-width: 85%;
+      border-radius: 16px;
+      padding: 10px 14px;
+      font-size: 14px;
+      line-height: 1.4;
       word-wrap: break-word;
       white-space: pre-wrap;
     }
 
     .chat-message.user {
       margin-left: auto;
-      background: linear-gradient(135deg, #4f46e5, #06b6d4);
-      color: #e5e7eb;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
       border-bottom-right-radius: 4px;
     }
 
     .chat-message.bot {
       margin-right: auto;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(148, 163, 184, 0.3);
-      color: #e5e7eb;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: #fff;
       border-bottom-left-radius: 4px;
     }
 
     .chat-footer {
-      padding: 10px 10px 12px;
-      border-top: 1px solid rgba(30, 64, 175, 0.6);
-      background: linear-gradient(to top, #020617, #020617f5);
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
       display: flex;
-      gap: 8px;
-      align-items: center;
+      gap: 10px;
     }
 
     .chat-input {
       flex: 1;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      padding: 7px 12px;
-      background: rgba(15, 23, 42, 0.9);
-      color: #e5e7eb;
-      font-size: 13px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 16px;
+      background: rgba(0, 0, 0, 0.2);
+      color: #fff;
+      font-size: 14px;
       outline: none;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input:focus {
+      border-color: var(--primary);
     }
 
     .chat-input::placeholder {
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     .chat-send {
-      border-radius: 999px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
       border: none;
-      padding: 7px 12px;
-      background: linear-gradient(135deg, #4f46e5, #06b6d4);
-      color: #e5e7eb;
-      font-size: 13px;
+      background: var(--primary);
+      color: #fff;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 4px;
-      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.8);
+      justify-content: center;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .chat-send:hover {
+      background: var(--secondary);
+      transform: scale(1.05);
     }
 
     .chat-send:disabled {
-      opacity: 0.6;
-      cursor: default;
-      box-shadow: none;
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
     }
 
-    .chat-send span {
-      font-size: 14px;
-    }
-
+    /* Typing indicator */
     .typing-indicator {
       display: inline-flex;
-      gap: 2px;
+      gap: 4px;
+      padding: 4px 8px;
     }
 
     .dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 999px;
-      background: #9ca3af;
-      animation: blink 1s infinite ease-in-out;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      animation: blink 1.4s infinite ease-in-out both;
     }
 
-    .dot:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    .dot:nth-child(3) {
-      animation-delay: 0.4s;
-    }
+    .dot:nth-child(1) { animation-delay: -0.32s; }
+    .dot:nth-child(2) { animation-delay: -0.16s; }
 
     @keyframes blink {
-      0%, 80%, 100% { opacity: 0.2; transform: translateY(0); }
-      40% { opacity: 1; transform: translateY(-1px); }
+      0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+      40% { opacity: 1; transform: scale(1); }
     }
+
   </style>
 </head>
 <body>
+  
+  <div class="glow top-left"></div>
+  <div class="glow bottom-right"></div>
+
+  <div class="container">
+    <header>
+      <div class="logo">DeNICE-AI</div>
+      <a href="https://github.com/DeNICE-AI" target="_blank" class="btn" style="padding: 10px 20px; font-size: 14px;">GitHub</a>
+    </header>
+
+    <section class="hero">
+      <h1>AI Solutions &<br>Business Automation</h1>
+      <p>I build intelligent agents, RAG applications, and automation tools that help businesses save time and scale operations efficiently using modern LLMs.</p>
+      <a href="#projects" class="btn">View Projects</a>
+    </section>
+
+    <section id="projects" class="projects">
+      <h2 class="section-title">Open Source Projects</h2>
+      <div class="grid">
+        
+        <div class="card">
+          <h3>CompetitorMonitoring</h3>
+          <p>Приложение для анализа сайтов, изображений и PDF: выявляет сильные и слабые стороны и даёт рекомендации.</p>
+          <a href="https://github.com/DeNICE-AI/CompetitorMonitoring" target="_blank" class="card-link">
+            View on GitHub <span>→</span>
+          </a>
+        </div>
+
+        <div class="card">
+          <h3>Review Analyzer</h3>
+          <p>Автоматизация работы с отзывами клиентов через GigaChat API. Ускоряет обработку обратной связи.</p>
+          <a href="https://github.com/DeNICE-AI/review-analyzer" target="_blank" class="card-link">
+            View on GitHub <span>→</span>
+          </a>
+        </div>
+
+        <div class="card">
+          <h3>Telegram Bot RAG</h3>
+          <p>Телеграм бот с Retrieval-Augmented Generation (RAG). Напрямую интегрирован с моделями GigaChat.</p>
+          <a href="https://github.com/DeNICE-AI/telegram-bot-rag" target="_blank" class="card-link">
+            View on GitHub <span>→</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- Chat Widget Section -->
   <button class="chat-launcher" id="chat-launcher" aria-label="Открыть FAQ-ассистента">
     <span>💬</span>
   </button>
 
-  <div class="chat-widget" id="chat-widget" style="display:none;">
+  <div class="chat-widget hidden" id="chat-widget">
     <div class="chat-header">
       <div class="chat-header-left">
         <div class="avatar">AI</div>
         <div>
-          <div class="chat-title">FAQ ассистент</div>
-          <div class="chat-subtitle">Задайте вопрос о компании</div>
+          <div class="chat-title">FAQ Ассистент</div>
+          <div class="chat-subtitle">Работает на GigaChat</div>
         </div>
       </div>
       <button class="chat-close" id="chat-close" aria-label="Закрыть чат">×</button>
     </div>
     <div class="chat-messages" id="chat-messages"></div>
     <div class="chat-footer">
-      <input
-        id="chat-input"
-        class="chat-input"
-        placeholder="Напишите вопрос..."
-      />
-      <button id="chat-send" class="chat-send">
-        <span>➤</span>
+      <input id="chat-input" class="chat-input" placeholder="Напишите вопрос..." />
+      <button id="chat-send" class="chat-send" aria-label="Отправить">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
       </button>
     </div>
   </div>
 
   <script>
-    const API_BASE = "http://localhost:8000";
+    // В продакшене путь будет зависеть от того, как развернут сервер (можно оставить относительным или абсолютным)
+    const API_BASE = "http://localhost:8000"; 
 
     const launcher = document.getElementById("chat-launcher");
     const widget = document.getElementById("chat-widget");
@@ -317,25 +544,26 @@
       } catch (err) {
         console.error(err);
         removeTyping();
-        appendMessage("Не удалось получить ответ. Попробуйте позже.", "bot");
+        appendMessage("Не удалось подключиться к серверу GigaChat. Попробуйте позже.", "bot");
       } finally {
         isSending = false;
         sendBtn.disabled = false;
+        setTimeout(() => inputEl.focus(), 50);
       }
     }
 
     launcher.addEventListener("click", () => {
-      widget.style.display = "flex";
-      launcher.style.display = "none";
+      widget.classList.remove("hidden");
+      launcher.style.transform = "scale(0)";
       if (!messagesEl.hasChildNodes()) {
-        appendMessage("Привет! Я FAQ-ассистент. Задайте вопрос о нашей компании, услугах, заказах и доставке.", "bot");
+        appendMessage("Привет! Я ИИ-ассистент, задай мне вопрос о проектах или услугах.", "bot");
       }
-      setTimeout(() => inputEl.focus(), 50);
+      setTimeout(() => inputEl.focus(), 300);
     });
 
     closeBtn.addEventListener("click", () => {
-      widget.style.display = "none";
-      launcher.style.display = "flex";
+      widget.classList.add("hidden");
+      launcher.style.transform = "scale(1)";
     });
 
     sendBtn.addEventListener("click", sendMessage);
@@ -349,5 +577,3 @@
   </script>
 </body>
 </html>
-
-
