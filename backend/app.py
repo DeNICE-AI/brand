@@ -3,6 +3,8 @@ from typing import List, Dict, Any
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -31,6 +33,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
+
+@app.get("/")
+async def serve_frontend():
+    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+
 
 
 class ChatRequest(BaseModel):
